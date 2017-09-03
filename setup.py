@@ -6,12 +6,12 @@ if sys.version_info[:2] < (3, 6):
     raise RuntimeError("Python version must be >= 3.6")
 
 
-setup(name='finam',
+setup(name='moneytalks',
       version='0.1',
-      description='Unofficial Python interface to Finam services.',
-      url='https://github.com/vlasenkov/finam',
+      description='Stock data manipulation library',
+      url='https://github.com/vlasenkov/moneytalks',
       author='Leonid Vlasenkov',
       license='MIT',
-      packages=['finam'],
-      package_data = {'finam': ['cache/icharts.js']})
+      packages=['moneytalks'],
+      package_data = {'moneytalks': ['finam/icharts.js']})
 

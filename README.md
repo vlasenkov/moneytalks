@@ -1,6 +1,6 @@
-# finam
+# moneytalks
 
-Unofficial Python interface to [Finam](https://www.finam.ru/) services.
+Library for stock data manipulation
 
 ## Installation
 
@@ -14,11 +14,13 @@ $ pip install .
 
 ## Usage
 
+### Finam
+
 Download dataset:
 
 ~~~python
 >>> import pandas as pd
->>> from finam import export
+>>> from moneytalks.finam import export
 >>> url = export.make_url('SBER', start='2016-01-01')  # end = now by default
 >>> pd.read_csv(url)  # this guy automatically downloads the data
        <DATE>    <TIME>  <OPEN>   <HIGH>    <LOW>  <CLOSE>     <VOL>
@@ -34,6 +36,10 @@ Update and access dictionary of emitents:
 >>> export.emitents.bycode['SBER']
 Сбербанк (SBER)
 ~~~
+
+### Moscow Exchange
+
+
 
 ## License
 

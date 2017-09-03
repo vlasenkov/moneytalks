@@ -10,7 +10,8 @@ __all__ = ['make_url', 'emitents']
 
 ICHARTSURL = 'http://www.finam.ru/cache/icharts/icharts.js'
 ICHARTSPATH = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                           'cache/icharts.js')
+                                           'icharts.js')
+
 
 FREQS = {
     1:  ['tick', 't', 'ticks'],
