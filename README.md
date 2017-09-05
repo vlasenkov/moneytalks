@@ -1,4 +1,4 @@
-# moneytalks
+# Moneytalks
 
 Library for stock data manipulation
 

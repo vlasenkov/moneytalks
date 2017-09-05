@@ -46,22 +46,26 @@ DIGIT_SEPS = {
 
 class Emitent(object):
 
-    def __init__(self, id, name, code, market):
+    def __init__(self, id, name, symbol, market):
         self.id = id
         self.name = name
-        self.code = code
+        self.symbol = symbol
         self.market = market
         emitents.byid[self.id] = self
-        emitents.bycode[self.code] = self
+        emitents.bysym[self.symbol] = self
+        emitents.bymarket[self.market] = self
 
     def __repr__(self):
-        return f'{self.name} ({self.code})'
+        return f'{self.name} ({self.symbol})'
 
 
 class emitents:
 
     byid = {}
-    bycode = {}
+    bysym = {}
+    bymarket = {}
+
+    _icharts = None
 
     @staticmethod
     def update(icharts=None):
@@ -82,10 +86,12 @@ class emitents:
                                icharts.decode('cp1251'))
         icharts = {name: eval(value) for name, value in variables}
         emitents.byid = {}
-        emitents.bycode = {}
+        emitents.bysym = {}
+        emitents.bymarket = {}
         for em in zip(icharts['aEmitentIds'], icharts['aEmitentNames'],
                       icharts['aEmitentCodes'], icharts['aEmitentMarkets']):
             Emitent(*em)
+        emitents._icharts = icharts
 
 
 try:
@@ -128,7 +134,7 @@ def make_url(symbol, start, end=None, filename='data.csv', freq='day',
         str: url
 
     """
-    ticker = emitents.bycode[symbol]
+    ticker = emitents.bysym[symbol]
     # TODO make datf, mstimever, tmf, dmf tunable too
     args = {'tmf': 1, 'dmf': 1, 'mstimever': 1, 'datf': 5, 'cn': symbol,
             'code': symbol, 'market': ticker.market, 'em': ticker.id}
