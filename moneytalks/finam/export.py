@@ -113,13 +113,13 @@ def parse_date(date):
     return date.strftime('%d.%m.%Y'), date.day, date.month - 1, date.year
 
 
-def make_url(symbol, start, end=None, filename='data.csv', freq='day',
+def make_url(ticker, start, end=None, filename='data.csv', freq='day',
              field_sep=',', digit_sep='.', mstime=True, header=True,
              time='open'):
     """Generate URL to download stock history from Finam.
 
     Args:
-        symbol (str): instrument symbol
+        ticker (str, Emitent): instrument
         start (str, datetime): start date
         end (str, datetime): end date
         filename (str): out file name
@@ -134,10 +134,11 @@ def make_url(symbol, start, end=None, filename='data.csv', freq='day',
         str: url
 
     """
-    ticker = emitents.bysym[symbol]
+    if isinstance(ticker, str):
+        ticker = emitents.bysym[ticker]
     # TODO make datf, mstimever, tmf, dmf tunable too
-    args = {'tmf': 1, 'dmf': 1, 'mstimever': 1, 'datf': 5, 'cn': symbol,
-            'code': symbol, 'market': ticker.market, 'em': ticker.id}
+    args = {'tmf': 1, 'dmf': 1, 'mstimever': 1, 'datf': 5, 'cn': ticker.symbol,
+            'code': ticker.symbol, 'market': ticker.market, 'em': ticker.id}
     if mstime: args['mstime'] = 'on'
     if header: args['at'] = 1
     if end is None: end = datetime.datetime.now()
