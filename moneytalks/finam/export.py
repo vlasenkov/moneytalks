@@ -5,7 +5,7 @@ import warnings
 import os
 
 
-__all__ = ['make_url', 'emitents']
+__all__ = ['make_url', 'emitents', 'load']
 
 
 ICHARTSURL = 'http://www.finam.ru/cache/icharts/icharts.js'
@@ -169,3 +169,28 @@ def make_url(ticker, start, end=None, filename='data.csv', freq='day',
         raise ValueError(f'unsupported time parameter value "{time}"')
 
     return f'http://export.finam.ru/{filename}?' + urllib.parse.urlencode(args)
+
+
+def load(ticker, start, end=None):
+    """Load trades for one or more stocks.
+
+    Args:
+        ticker (str, list[str]): instruments
+        start (str, datetime): start
+        end (str, datetime): end
+
+    Returns:
+        DataFrame: in case of multiple tickers returns multiindex frame
+
+    """
+    if isinstance(ticker, list):
+        result = {}
+        for tick in ticker:
+            em = export.emitents.bysym[tick]
+            url = export.make_url(em, start, end)
+            result[tick] = pd.read_csv(url, parse_dates=['<DATE>'],
+                                       index_col='<DATE>')
+        return pd.concat(result, axis=1)
+    else:
+        url = export.make_url(export.emitents.bysym[ticker], start, end)
+        return pd.read_csv(url, parse_dates=['<DATE>'], index_col='<DATE>')    
