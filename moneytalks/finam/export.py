@@ -1,4 +1,5 @@
 import urllib.request
+import pandas as pd
 import datetime
 import re
 import warnings
@@ -186,11 +187,11 @@ def load(ticker, start, end=None):
     if isinstance(ticker, list):
         result = {}
         for tick in ticker:
-            em = export.emitents.bysym[tick]
-            url = export.make_url(em, start, end)
+            em = emitents.bysym[tick]
+            url = make_url(em, start, end)
             result[tick] = pd.read_csv(url, parse_dates=['<DATE>'],
                                        index_col='<DATE>')
         return pd.concat(result, axis=1)
     else:
-        url = export.make_url(export.emitents.bysym[ticker], start, end)
+        url = make_url(emitents.bysym[ticker], start, end)
         return pd.read_csv(url, parse_dates=['<DATE>'], index_col='<DATE>')    
